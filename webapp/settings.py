@@ -1,5 +1,5 @@
 """
-Django settings for property_valuation project.
+Django settings for webapp project.
 """
 import os
 from pathlib import Path
@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'property_valuation.urls'
+ROOT_URLCONF = 'webapp.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'property_valuation.wsgi.application'
+WSGI_APPLICATION = 'webapp.wsgi.application'
 
 # Database
 DATABASES = {
