@@ -6,6 +6,13 @@ db.sqlite3
 /staticfiles/
 /static/
 
+# Media files (uploaded content)
+/media/*
+!/media/.gitkeep
+!/media/uploads/.gitkeep
+!/media/profile_pics/.gitkeep
+!/media/property_photos/.gitkeep
+
 # Environment
 .env
 venv/
