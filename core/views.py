@@ -5,5 +5,5 @@ logger = logging.getLogger(__name__)
 
 def home(request):
     """Home page view"""
-    logger.info(f"Home page accessed by {request.user}")
+    logger.info("Home page accessed by %s", request.user)
     return render(request, 'base/home.html')
