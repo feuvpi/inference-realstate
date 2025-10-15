@@ -102,5 +102,9 @@ class User(AbstractUser):
         return self.name
     
     def get_short_name(self):
-        """Return the first name"""
-        return self.name.split()[0] if self.name else self.email
+        """Return the first name or email if name is not set"""
+        name = str(self.name).strip()
+        if name:
+            first_name = name.split()[0] if ' ' in name else name
+            return first_name
+        return self.email
