@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Profile - Property Valuation SaaS{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="mb-4">My Profile</h2>
+                
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Email:</div>
+                    <div class="col-md-9">{{ user.email }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Name:</div>
+                    <div class="col-md-9">{{ user.name }}</div>
+                </div>
+                
+                {% if user.company %}
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Company:</div>
+                    <div class="col-md-9">{{ user.company }}</div>
+                </div>
+                {% endif %}
+                
+                {% if user.phone %}
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Phone:</div>
+                    <div class="col-md-9">{{ user.phone }}</div>
+                </div>
+                {% endif %}
+                
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Email Verified:</div>
+                    <div class="col-md-9">
+                        {% if user.is_verified %}
+                            <span class="badge bg-success">Verified</span>
+                        {% else %}
+                            <span class="badge bg-warning">Not Verified</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-3 fw-bold">Member Since:</div>
+                    <div class="col-md-9">{{ user.created_at|date:"F d, Y" }}</div>
+                </div>
+                
+                <hr>
+                
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn btn-primary">Edit Profile</a>
+                    <a href="#" class="btn btn-outline-secondary">Change Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

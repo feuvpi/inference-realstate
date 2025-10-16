@@ -23,8 +23,8 @@ from core.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-        path('', home, name='home'),  # Add this line
-
+    path('', home, name='home'),  # Add this line
+    path('accounts/', include('accounts.urls')),
 ]
 
 # Debug Toolbar URLs (only in development)

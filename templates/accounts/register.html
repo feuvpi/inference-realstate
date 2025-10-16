@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register - Property Valuation SaaS{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4">Create Account</h2>
+                <p class="text-center text-muted mb-4">
+                    Start your property valuation journey
+                </p>
+                
+                {% crispy form %}
+                
+                <hr class="my-4">
+                
+                <p class="text-center mb-0">
+                    Already have an account? 
+                    <a href="{% url 'accounts:login' %}">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
