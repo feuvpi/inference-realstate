@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Property
+
+from properties.models import Property
+from properties.models import Variable
 
 
 @admin.register(Property)
@@ -141,3 +143,114 @@ class PropertyAdmin(admin.ModelAdmin):
         updated = queryset.update(data_quality='high')
         self.message_user(request, f'{updated} properties marked as high quality.')
     mark_high_quality.short_description = "Mark as high quality data"
+
+
+@admin.register(Variable)
+class VariableAdmin(admin.ModelAdmin):
+    """Interface admin para Catálogo de Variáveis"""
+    
+    # Visualização em lista
+    list_display = [
+        'name',
+        'code',
+        'data_type',
+        'unit',
+        'category',
+        'required_badge',
+        'active_badge',
+        'use_in_regression',
+        'display_order'
+    ]
+    
+    list_filter = [
+        'category',
+        'data_type',
+        'is_active',
+        'is_required',
+        'use_in_regression'
+    ]
+    
+    search_fields = [
+        'name',
+        'code',
+        'description'
+    ]
+    
+    readonly_fields = ['created_at', 'updated_at']
+    
+    # Organização em fieldsets
+    fieldsets = (
+        ('Identificação', {
+            'fields': ('code', 'name', 'description', 'category')
+        }),
+        ('Tipo de Dado', {
+            'fields': ('data_type', 'unit')
+        }),
+        ('Validações (Numéricos)', {
+            'fields': ('min_value', 'max_value'),
+            'description': 'Aplicável apenas para tipos decimal e inteiro'
+        }),
+        ('Opções (Escolha)', {
+            'fields': ('choices',),
+            'description': 'Lista de opções para variáveis do tipo "escolha". Exemplo: ["Baixo", "Médio", "Alto"]'
+        }),
+        ('Configurações', {
+            'fields': ('is_required', 'is_active', 'use_in_regression', 'display_order')
+        }),
+        ('Metadados', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        })
+    )
+    
+    # Métodos de exibição customizados
+    def required_badge(self, obj):
+        """Badge para campo obrigatório"""
+        if obj.is_required:
+            return format_html(
+                '<span style="background-color: #dc3545; color: white; '
+                'padding: 3px 8px; border-radius: 3px; font-size: 11px;">'
+                'OBRIGATÓRIA</span>'
+            )
+        return format_html(
+            '<span style="background-color: #6c757d; color: white; '
+            'padding: 3px 8px; border-radius: 3px; font-size: 11px;">'
+            'OPCIONAL</span>'
+        )
+    required_badge.short_description = 'Obrigatória?'
+    
+    def active_badge(self, obj):
+        """Badge para status ativo"""
+        if obj.is_active:
+            return format_html(
+                '<span style="background-color: #28a745; color: white; '
+                'padding: 3px 8px; border-radius: 3px; font-size: 11px;">'
+                'ATIVA</span>'
+            )
+        return format_html(
+            '<span style="background-color: #ffc107; color: black; '
+            'padding: 3px 8px; border-radius: 3px; font-size: 11px;">'
+            'INATIVA</span>'
+        )
+    active_badge.short_description = 'Status'
+    
+    # Ações
+    actions = ['activate_variables', 'deactivate_variables', 'mark_as_required']
+    
+    def activate_variables(self, request, queryset):
+        """Ativar variáveis selecionadas"""
+        updated = queryset.update(is_active=True)
+        self.message_user(request, f'{updated} variável(is) ativada(s).')
+    activate_variables.short_description = "Ativar variáveis selecionadas"
+    
+    def deactivate_variables(self, request, queryset):
+        """Desativar variáveis selecionadas"""
+        updated = queryset.update(is_active=False)
+        self.message_user(request, f'{updated} variável(is) desativada(s).')
+    deactivate_variables.short_description = "Desativar variáveis selecionadas"
+    
+    def mark_as_required(self, request, queryset):
+        """Marcar como obrigatórias"""
+        updated = queryset.update(is_required=True)
+        self.message_user(request, f'{updated} variável(is) marcada(s) como obrigatória(s).')
+    mark_as_required.short_description = "Marcar como obrigatórias"
